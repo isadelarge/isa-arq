@@ -219,7 +219,8 @@
     const slides = [...hero.querySelectorAll('[data-slide]')];
     const name = hero.querySelector('[data-hero-name]');
     const later = () => slides.forEach((im) => { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } });
-    if (document.readyState === 'complete') setTimeout(later, 600); else addEventListener('load', () => setTimeout(later, 600), { once: true });
+    if (document.querySelector('.intro:not(.is-gone)')) addEventListener('if:intro-done', () => setTimeout(later, 1500), { once: true });
+    else if (document.readyState === 'complete') setTimeout(later, 2500); else addEventListener('load', () => setTimeout(later, 2500), { once: true });
     if (slides.length > 1 && !reduce) {
       let s = 0;
       setInterval(() => {
@@ -483,19 +484,33 @@
   }, { passive: true });
 
   // Pontinhos embaixo do carrossel de fotos no celular
-  const dots = (scope = document) => scope.querySelectorAll('.mosaic').forEach((m) => {
-    if (m.nextElementSibling?.classList.contains('mosaic__dots')) return;
-    const items = [...m.querySelectorAll('.mosaic__item')];
+  // Pontinhos embaixo das faixas que deslizam de lado no celular (fotos e ambientes).
+  // Um ponto por parada possível: na faixa de ambientes cabem duas fotos por vez, então há menos pontos que fotos.
+  const dots = (scope = document) => scope.querySelectorAll('.mosaic, .rooms').forEach((m) => {
+    if (m.nextElementSibling?.classList.contains('mosaic__dots') || m.dataset.dots) return;
+    const items = [...m.children].filter((c) => c.matches('.mosaic__item, button'));
     if (items.length < 2) return;
+    m.dataset.dots = '1';
     m.insertAdjacentHTML('afterend', `<div class="mosaic__dots" aria-hidden="true">${items.map(() => '<span></span>').join('')}</div>`);
-    const marks = [...m.nextElementSibling.children];
+    const bar = m.nextElementSibling;
+    let marks = [...bar.children], step = 1;
+    marks[0].classList.add('is-on');
     const sync = () => {
-      const step = items[1].offsetLeft - items[0].offsetLeft || 1;
-      const k = Math.min(items.length - 1, Math.round(m.scrollLeft / step));
+      const k = Math.min(marks.length - 1, Math.round(m.scrollLeft / step));
       marks.forEach((d, i) => d.classList.toggle('is-on', i === k));
     };
+    // mede depois do quadro já desenhado, para não forçar layout no carregamento
+    const build = () => {
+      if (!m.clientWidth) return;
+      step = items[1].offsetLeft - items[0].offsetLeft || 1;
+      const n = Math.max(1, Math.min(items.length, Math.round((m.scrollWidth - m.clientWidth) / step) + 1));
+      if (n !== marks.length) { bar.innerHTML = '<span></span>'.repeat(n); marks = [...bar.children]; }
+      bar.hidden = n < 2;
+      sync();
+    };
+    requestAnimationFrame(() => setTimeout(build));
+    addEventListener('resize', () => requestAnimationFrame(build));
     m.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
-    marks[0].classList.add('is-on');   // começa na primeira foto, sem medir o layout no carregamento
   });
   dots();
 

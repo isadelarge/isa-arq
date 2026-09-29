@@ -84,6 +84,7 @@
   details.addEventListener('toggle', () => setTimeout(() => IF.lenis?.resize(), 520));
 
   bindTour(body.querySelector('.p-tour'), p);
+  IF.dots(body);
   observe(body);
   scanImgs(body);
   IF.noWidows(body);

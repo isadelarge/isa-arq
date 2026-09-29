@@ -1,12 +1,11 @@
 /* Isadora Figueiredo Arquitetura & Interiores */
-@supports (interpolate-size: allow-keywords) { /* Lenis (antes vinha de um CSS externo que travava a primeira pintura) */
+@supports (interpolate-size: allow-keywords) { :root { interpolate-size: allow-keywords; } }
+/* Lenis (antes vinha de um CSS externo que travava a primeira pintura) */
 html.lenis, html.lenis body { height: auto; }
 .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
 .lenis [data-lenis-prevent], .lenis [data-lenis-prevent-wheel], .lenis [data-lenis-prevent-touch], .lenis [data-lenis-prevent-vertical], .lenis [data-lenis-prevent-horizontal] { overscroll-behavior: contain; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 .lenis.lenis-autoToggle { transition-property: overflow; transition-duration: 1ms; transition-behavior: allow-discrete; }
-
-:root { interpolate-size: allow-keywords; } }
 :root {
   --white: #ffffff;
   --paper: #f7f2ec;               /* fundo das fotos enquanto carregam */
@@ -259,6 +258,8 @@ html.is-intro, html.is-locked { overflow: hidden; }
 /* Abertura só com o nome, de ponta a ponta na base da foto */
 .hero__name { position: absolute; left: 0; right: 0; bottom: clamp(14px, 2.2vw, 36px); z-index: 2; padding-inline: clamp(12px, 1.8vw, 32px); }
 .hero__name h1 { margin: 0; line-height: 0; }
+/* No celular o nome vai em duas linhas, com as letras quase no dobro do tamanho */
+.hero__word > .hero__word--l1, .hero__word > .hero__word--l2 { display: none; }
 .hero__name img { display: block; width: 100%; height: auto; filter: brightness(0) invert(1); }
 /* Assinatura da marca sobre o nome, alinhada ao I */
 .hero__tag { margin: 0 0 clamp(4px, .9vw, 16px) clamp(2px, .35vw, 8px); line-height: 0; opacity: 0; transition: opacity 1.4s .5s var(--ease); }
@@ -689,6 +690,7 @@ html.pt-arrive::after { content: var(--pt-label, ""); animation: ptOut .9s .15s 
   .p-text { grid-column: 11 / 25; }
 }
 @media (max-width: 900px) {
+  .hero__name { padding-inline: var(--gutter); }
   .header__nav, .header__cta { display: none; }
   .header__inner { grid-template-columns: 1fr auto; padding-block: 14px; }
   .header__menu { display: inline-flex; }
@@ -761,6 +763,8 @@ html.pt-arrive::after { content: var(--pt-label, ""); animation: ptOut .9s .15s 
   .mosaic__dots { display: flex; justify-content: center; align-items: center; gap: 10px; height: 6px; margin-top: 18px; }
   .mosaic__dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background-color .4s var(--ease), transform .4s var(--ease); }
   .mosaic__dots span.is-on { background: var(--clay); transform: scale(1.2); }
+  .mosaic__dots[hidden] { display: none; }
+  .rooms + .mosaic__dots { margin: -14px 0 8px; }
   .toolbar { padding-block: 16px; }
   .toolbar [data-filters] { gap: 24px; }
   .tabs button { font-size: 12px; letter-spacing: .12em; }
@@ -793,6 +797,13 @@ html.pt-arrive::after { content: var(--pt-label, ""); animation: ptOut .9s .15s 
   .p-hero__meta { text-align: left; padding-bottom: 0; }
 }
 @media (max-width: 560px) {
+  /* Celular: nome em duas linhas, com as letras quase no dobro do tamanho */
+  .hero__word > .hero__word--full { display: none; }
+  .hero__word > .hero__word--l1, .hero__word > .hero__word--l2 { display: block; }
+  .hero__word--l1 img { width: calc(100% * 718 / 928); }   /* mesma altura de letra nas duas linhas */
+  .hero__word--l2 { margin-top: -.5%; }
+  .hero__name .hero__tag img { width: clamp(190px, 52vw, 300px); }
+  .hero__tag { margin-bottom: 10px; }
   .btn { height: 50px; padding: 0 24px; }
   .hero__title { font-size: clamp(42px, 12.6vw, 64px); }
   .hero__mark { width: 100%; }
