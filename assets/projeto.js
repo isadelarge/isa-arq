@@ -22,7 +22,7 @@
   document.title = `${p.name}, ${kind} | Isadora Figueiredo, arquiteta em Maringá`;
   document.querySelector('meta[name=description]')?.setAttribute('content', `${p.name}, ${kind} de Isadora Figueiredo${p.city ? `, em ${p.city}` : ''}. ${p.lead}`);
 
-  hero.insertAdjacentHTML('afterbegin', `<img src="${src(p.slug, p.cover)}" alt="${esc(p.name)}, ${kind} de Isadora Figueiredo">`);
+  hero.insertAdjacentHTML('afterbegin', `<img src="${src(p.slug, p.cover)}"${IF.dim(p, p.cover)} fetchpriority="high" alt="${esc(p.name)}, ${kind} de Isadora Figueiredo">`);
   hero.querySelector('[data-p-name]').textContent = p.name;
   hero.querySelector('[data-p-meta]').textContent = [catName[p.cat], p.city].filter(Boolean).join(', ');
 
@@ -64,7 +64,7 @@
     </section>
 
     <a class="p-next" href="projeto.html?p=${next.slug}" data-transition="${esc(next.name)}">
-      <img src="${src(next.slug, next.cover)}" alt="${esc(next.name)}" loading="lazy">
+      <img src="${src(next.slug, next.cover)}"${IF.dim(next, next.cover)} alt="${esc(next.name)}" loading="lazy">
       <div class="wrap p-next__content">
         <p class="eyebrow">Próximo projeto</p>
         <div class="p-next__bottom">

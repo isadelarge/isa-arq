@@ -5,6 +5,13 @@
   const P = window.PROJECTS || [];
   const bySlug = Object.fromEntries(P.map((p) => [p.slug, p]));
   const src = (slug, i) => `assets/img/${slug}/${String(i).padStart(2, '0')}.webp`;
+  // Medidas e versões menores de uma foto (800 e 1200 px), para o navegador escolher a certa para a tela
+  const dim = (p, i) => (p.dims[i] ? ` width="${p.dims[i][0]}" height="${p.dims[i][1]}"` : '');
+  const sset = (p, i, sizes) => {
+    const w = p.dims[i]?.[0] || 1600, b = src(p.slug, i).slice(0, -5);
+    const v = [800, 1200].filter((x) => x < w);
+    return v.length ? ` srcset="${v.map((x) => `${b}-${x}.webp ${x}w`).join(', ')}, ${b}.webp ${w}w" sizes="${sizes}"` : '';
+  };
   const catName = { arquitetura: 'Arquitetura', interiores: 'Interiores' };
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   const WA_NUMBER = '5544991344852';
@@ -52,13 +59,14 @@
   const navType = performance.getEntriesByType?.('navigation')[0]?.type;
   const skipIntro = !!location.hash || navType === 'back_forward';
   const ready = () => root.classList.add('is-ready');
+  const unIntro = () => { root.classList.add('is-snap'); root.classList.remove('is-intro'); root.offsetHeight; root.classList.remove('is-snap'); };
   if (intro && !skipIntro) {
     lenis?.stop();
     scrollTo(0, 0);
     const end = () => {
       if (intro.classList.contains('is-leaving')) return;
       intro.classList.add('is-leaving');
-      root.classList.remove('is-intro');
+      unIntro();
       lenis?.start();
       setTimeout(ready, 350);
       setTimeout(() => { intro.classList.add('is-gone'); dispatchEvent(new Event('if:intro-done')); }, 1400);
@@ -73,7 +81,7 @@
     intro.addEventListener('click', end);
   } else {
     intro?.classList.add('is-gone');
-    root.classList.remove('is-intro');
+    unIntro();
     requestAnimationFrame(ready);
   }
 
@@ -210,10 +218,14 @@
   if (hero) {
     const slides = [...hero.querySelectorAll('[data-slide]')];
     const name = hero.querySelector('[data-hero-name]');
+    const later = () => slides.forEach((im) => { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } });
+    if (document.readyState === 'complete') setTimeout(later, 600); else addEventListener('load', () => setTimeout(later, 600), { once: true });
     if (slides.length > 1 && !reduce) {
       let s = 0;
       setInterval(() => {
         if (document.hidden) return;
+        const nx = slides[(s + 1) % slides.length];
+        if (!nx.complete || !nx.naturalWidth) return;
         slides[s].classList.remove('is-active');
         s = (s + 1) % slides.length;
         slides[s].classList.add('is-active');
@@ -268,7 +280,7 @@
   const frame = () => { updateWords(); if (!reduce) updateParallax(); ticking = false; };
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
   addEventListener('resize', frame);
-  frame();
+  requestAnimationFrame(frame);
 
   // Imagem flutuante nas frentes de atuação
   const float = document.querySelector('[data-fronts-float]');
@@ -376,7 +388,7 @@
     <div class="rooms">
       ${p.rooms.map((r, k) => `
         <button data-go-room="${roomId(p, k)}">
-          <div class="frame"><img src="${src(p.slug, r.photos[0])}" alt="" loading="lazy"></div>
+          <div class="frame"><img src="${src(p.slug, r.photos[0])}"${dim(p, r.photos[0])}${sset(p, r.photos[0], 'auto, 240px')} alt="" loading="lazy"></div>
           <b>${esc(r.name)}</b><small>${count(r.photos.length)}</small>
         </button>`).join('')}
     </div>`;
@@ -386,7 +398,7 @@
       <div class="room__grid">
         ${cells(p, r.photos).map((c) => `
           <button class="${c.wide ? 'is-wide' : ''}" data-photo="${c.i}" aria-label="Ampliar foto de ${esc(r.name)}">
-            <div class="frame" style="aspect-ratio:${c.ar}"><img src="${src(p.slug, c.i)}" alt="${esc(r.name)}, ${esc(p.name)}, projeto de ${catName[p.cat].toLowerCase()}" loading="lazy"></div>
+            <div class="frame" style="aspect-ratio:${c.ar}"><img src="${src(p.slug, c.i)}"${dim(p, c.i)}${sset(p, c.i, 'auto, (max-width: 900px) 100vw, 60vw')} alt="${esc(r.name)}, ${esc(p.name)}, projeto de ${catName[p.cat].toLowerCase()}" loading="lazy"></div>
           </button>`).join('')}
       </div>
     </section>`).join('');
@@ -483,7 +495,7 @@
       marks.forEach((d, i) => d.classList.toggle('is-on', i === k));
     };
     m.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
-    sync();
+    marks[0].classList.add('is-on');   // começa na primeira foto, sem medir o layout no carregamento
   });
   dots();
 
@@ -497,7 +509,7 @@
   };
   if (pinTexts.length) {
     const ro = new ResizeObserver(() => { pinTexts.forEach(setPin); lenis?.resize(); });
-    pinTexts.forEach((el) => { setPin(el); [...el.children].forEach((c) => ro.observe(c)); });
+    pinTexts.forEach((el) => [...el.children].forEach((c) => ro.observe(c)));
     document.fonts?.ready.then(() => pinTexts.forEach(setPin));
   }
 
@@ -532,5 +544,5 @@
   document.querySelectorAll('[data-more-about]').forEach((b) => b.addEventListener('click', () => slide(b.closest('.about__text'), true)));
   document.querySelectorAll('[data-less-about]').forEach((b) => b.addEventListener('click', () => slide(b.closest('.about__text'), false)));
 
-  window.IF = { P, bySlug, src, catName, esc, lenis, lock, scrollToEl, observe, scanImgs, openLb, sequence, stripHTML, roomsHTML, bindTour, mosaicPick, count, escStack, noWidows, wa, dots };
+  window.IF = { P, bySlug, src, dim, sset, catName, esc, lenis, lock, scrollToEl, observe, scanImgs, openLb, sequence, stripHTML, roomsHTML, bindTour, mosaicPick, count, escStack, noWidows, wa, dots };
 })();

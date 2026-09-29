@@ -1,11 +1,18 @@
 /* Isadora Figueiredo Arquitetura & Interiores */
-@supports (interpolate-size: allow-keywords) { :root { interpolate-size: allow-keywords; } }
+@supports (interpolate-size: allow-keywords) { /* Lenis (antes vinha de um CSS externo que travava a primeira pintura) */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent], .lenis [data-lenis-prevent-wheel], .lenis [data-lenis-prevent-touch], .lenis [data-lenis-prevent-vertical], .lenis [data-lenis-prevent-horizontal] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+.lenis.lenis-autoToggle { transition-property: overflow; transition-duration: 1ms; transition-behavior: allow-discrete; }
+
+:root { interpolate-size: allow-keywords; } }
 :root {
   --white: #ffffff;
   --paper: #f7f2ec;               /* fundo das fotos enquanto carregam */
   --ink: #2a1a12;                 /* texto: marrom quase preto */
   --ink-soft: rgba(42, 26, 18, .76);
-  --ink-faint: rgba(42, 26, 18, .56);
+  --ink-faint: rgba(42, 26, 18, .62);
   --line: rgba(42, 26, 18, .14);
   --clay: #9b4a25;                /* terra queimada, destaque */
   --clay-soft: #e3b08c;           /* destaque sobre fotos escuras */
@@ -32,7 +39,7 @@ body {
   font-family: var(--sans); font-weight: 400; font-size: 16px; line-height: 1.65;
   -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
-img, video { display: block; max-width: 100%; }
+img, video { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 h1, h2, h3, h4, p, figure, ul { margin: 0; }
@@ -261,6 +268,9 @@ html.is-intro, html.is-locked { overflow: hidden; }
 /* ---------- Revelações ---------- */
 .ln { display: block; overflow: hidden; padding-block: .06em .14em; margin-block: -.06em -.14em; }
 .ln > span { display: block; transform: translateY(115%); transition: transform 1.4s var(--ease); }
+/* Durante a intro o nome já fica pintado por baixo dela; quando ela sai, ele se esconde num instante e sobe como antes */
+html.is-intro .hero .ln > span { transform: none; transition: none; }
+html.is-snap .hero .ln > span { transition: none; }
 .is-ready .hero .ln > span, .is-ready .p-hero .ln > span { transform: none; }
 .is-ready .hero .ln:nth-child(2) > span { transition-delay: .12s; }
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1.3s var(--ease), transform 1.3s var(--ease); }
@@ -285,7 +295,8 @@ figcaption { margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing
 .ident__grid { display: grid; grid-template-columns: repeat(24, 1fr); column-gap: 20px; }
 .ident .eyebrow { grid-column: 1 / 7; padding-top: .9em; }
 .ident__text { grid-column: 7 / 24; font-family: var(--display); font-size: clamp(28px, 3.3vw, 58px); line-height: 1.2; text-wrap: pretty; }
-[data-words] .w { opacity: .16; transition: opacity .5s linear; }
+[data-words] .w { opacity: .5; transition: opacity .5s linear; }
+[data-words] em .w { opacity: .72; }   /* terracota apagado ainda legível */
 [data-words] .w.on { opacity: 1; }
 .ident__img--a { grid-column: 2 / 11; grid-row: 2; margin-top: clamp(100px, 12vw, 220px); }
 .ident__img--a .frame { aspect-ratio: 3 / 4; }
@@ -381,7 +392,7 @@ figcaption { margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 24px; margin-top: var(--s-block);
   padding-top: 28px; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.75;
 }
-.office__info h4 { margin-bottom: 12px; font-weight: 500; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); }
+.office__info h3 { margin-bottom: 12px; font-weight: 500; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); }
 .office__info a:not(.link-arrow) { border-bottom: 1px solid var(--line); transition: border-color .3s; }
 .office__info a:not(.link-arrow):hover { border-color: var(--ink); }
 .office__info .link-arrow { margin-top: 12px; font-size: 12px; }
@@ -439,8 +450,10 @@ figcaption { margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing
 .contact__jag {
   grid-column: 17 / 25; justify-self: end; width: 100%; max-width: 540px; aspect-ratio: 1073 / 430; margin-bottom: 4px;
   background: var(--cream);
-  -webkit-mask: url("brand/jaguar-clay.png") center / contain no-repeat; mask: url("brand/jaguar-clay.png") center / contain no-repeat;
+  -webkit-mask: center / contain no-repeat; mask: center / contain no-repeat;
 }
+/* A onça do rodapé só baixa quando o rodapé chega perto da tela */
+.contact__jag.is-in { -webkit-mask-image: url("brand/jaguar-clay.webp"); mask-image: url("brand/jaguar-clay.webp"); }
 .footer__row {
   display: flex; justify-content: space-between; align-items: center; gap: 20px 36px; flex-wrap: wrap;
   padding-block: var(--s-head) 30px; margin-top: var(--s-head); border-top: 1px solid var(--line-dark);
@@ -538,6 +551,8 @@ figcaption { margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing
 .tabs button[aria-pressed="true"]::after, .tabs button:is(:active, .is-tap)::after { transform: scaleX(1); transform-origin: left; }
 @media (hover: hover) { .tabs button:hover { color: var(--ink); } }
 
+/* Antes de a galeria ser montada, o espaço já fica reservado: o rodapé não aparece e depois pula */
+[data-gallery]:empty { min-height: 100vh; min-height: 100svh; }
 .gallery-end { padding-top: var(--s-section); }
 
 /* ---------- Tour de fotos por ambiente ---------- */
@@ -707,7 +722,8 @@ html.pt-arrive::after { content: var(--pt-label, ""); animation: ptOut .9s .15s 
   .office__info { grid-template-columns: 1fr 1fr; }
   /* Link do escritório vira uma linha inteira, com o mesmo respiro dos blocos de contato */
   .office__more { margin-top: 32px; }
-  .office__more .link-arrow { width: 100%; justify-content: space-between; min-height: 60px; border-block: 1px solid var(--line); }
+  .office__more .link-arrow { width: 100%; justify-content: space-between; min-height: 60px; border-top: 1px solid var(--line); }
+  .office__more .link-arrow::after { display: none; }   /* a linha de baixo do toque não se aplica a esta linha inteira */
   .contact__layout { grid-template-columns: 1fr; row-gap: var(--s-block); }
   .contact__main, .contact__jag { grid-column: 1; }
   .contact__jag { width: min(62%, 360px); margin-bottom: 0; }

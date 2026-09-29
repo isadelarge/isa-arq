@@ -21,7 +21,7 @@
       <div class="mosaic reveal">
         ${mosaicPick(p).map((i) => `
           <a class="mosaic__item" href="projeto.html?p=${p.slug}#foto-${i}" data-transition="${esc(p.name)}" aria-label="Ver esta foto de ${esc(p.name)}">
-            <img src="${src(p.slug, i)}" alt="${esc((p.rooms.find((r) => r.photos.includes(i)) || {}).name || p.name)}, ${esc(p.name)}, projeto de ${catName[p.cat].toLowerCase()}" loading="lazy">
+            <img src="${src(p.slug, i)}"${IF.dim(p, i)}${IF.sset(p, i, 'auto, (max-width: 900px) 86vw, 50vw')} alt="${esc((p.rooms.find((r) => r.photos.includes(i)) || {}).name || p.name)}, ${esc(p.name)}, projeto de ${catName[p.cat].toLowerCase()}" loading="lazy">
           </a>`).join('')}
       </div>
       <div class="gp__foot reveal">

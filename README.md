@@ -18,9 +18,10 @@ assets/main.js          comum às páginas: intro, menu, painel "Falar com a equ
 assets/projetos.js      monta a galeria e o filtro por categoria
 assets/projeto.js       monta a página de um projeto
 assets/data.js          projetos, textos, categoria e fotos separadas por ambiente
-assets/img/<slug>/      fotos em WebP
+assets/img/<slug>/      fotos em WebP; NN-800 e NN-1200 são versões menores da mesma foto, que o navegador escolhe conforme a tela.
+                        Ao trocar uma foto, gere de novo as duas versões (mesma proporção, qualidade 82)
 assets/img/escritorio/  foto do escritório (original em fotos/Escritorio)
-assets/brand/           onça, nome e assinatura recortados da marca original
+assets/brand/           onça, nome e assinatura recortados da marca original, em WebP sem perda
 
 ## WhatsApp
 

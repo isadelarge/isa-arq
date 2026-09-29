@@ -18,7 +18,7 @@
     "name": "Isadora Figueiredo Arquitetura e Interiores",
     "description": "Escritório de arquitetura e design de interiores em Maringá, Paraná, com projetos residenciais, apartamentos e espaços de trabalho.",
     "image": "assets/img/lm/07.webp",
-    "logo": "assets/brand/jaguar-clay.png",
+    "logo": "assets/brand/jaguar-clay.webp",
     "telephone": "+55 44 99134-4852",
     "address": {
       "@type": "PostalAddress",
@@ -51,10 +51,10 @@
   <link rel="icon" href="assets/brand/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300..600;1,400&family=Marcellus&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/img/lm/09.webp">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css">
-  <link rel="stylesheet" href="assets/style.css?v=55">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300..600;1,400&amp;family=Marcellus&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300..600;1,400&amp;family=Marcellus&amp;display=swap"></noscript>
+  <link rel="preload" as="image" href="assets/img/lm/09.webp" fetchpriority="high">
+  <link rel="stylesheet" href="assets/style.css?v=59">
   <script>try{var l=sessionStorage.getItem('if-pt');if(l!==null){document.documentElement.classList.add('pt-arrive');document.documentElement.style.setProperty('--pt-label',JSON.stringify(l));sessionStorage.removeItem('if-pt')}}catch(e){}</script>
 </head>
 <body>
@@ -62,16 +62,16 @@
 <!-- Intro: a onça e o nome da marca, discretos, no centro -->
 <div class="intro" data-intro aria-hidden="true">
   <div class="intro__stage">
-    <img class="intro__jag" src="assets/brand/jaguar-clay.png" alt="">
-    <img class="intro__word" src="assets/brand/word-640.png" alt="">
-    <img class="intro__tag" src="assets/brand/tag-400.png" alt="">
+    <img class="intro__jag" src="assets/brand/jaguar-clay-240.webp" srcset="assets/brand/jaguar-clay-240.webp 240w, assets/brand/jaguar-clay-480.webp 480w" sizes="100px" alt="" width="1073" height="430">
+    <img class="intro__word" src="assets/brand/word-640.webp" alt="" width="640" height="55">
+    <img class="intro__tag" src="assets/brand/tag-400.webp" alt="" width="400" height="74">
   </div>
 </div>
 
 <header class="header" data-header>
   <div class="wrap header__inner">
     <a class="header__logo" href="index.html" aria-label="Isadora Figueiredo Arquitetura e Interiores, início">
-      <img src="assets/brand/jaguar-clay.png" alt="" width="1073" height="430">
+      <img src="assets/brand/jaguar-clay-240.webp" srcset="assets/brand/jaguar-clay-240.webp 240w, assets/brand/jaguar-clay-480.webp 480w" sizes="90px" alt="" width="1073" height="430">
     </a>
     <nav class="header__nav" aria-label="Principal">
       <a href="projetos.html">Projetos</a>
@@ -85,7 +85,7 @@
 
 <div class="menu" id="menu" data-menu>
   <div class="menu__top">
-    <img class="menu__logo" src="assets/brand/jaguar-clay.png" alt="Isadora Figueiredo Arquitetura e Interiores" width="1073" height="430">
+    <img class="menu__logo" src="assets/brand/jaguar-clay-240.webp" srcset="assets/brand/jaguar-clay-240.webp 240w, assets/brand/jaguar-clay-480.webp 480w" sizes="120px" alt="Isadora Figueiredo Arquitetura e Interiores" width="1073" height="430">
     <button class="icon-btn" data-menu-close aria-label="Fechar menu"><svg class="i"><use href="#i-close"/></svg></button>
   </div>
   <nav class="menu__links" aria-label="Menu">
@@ -105,14 +105,14 @@
   <!-- Hero -->
   <section class="hero" data-hero data-bare aria-label="Apresentação">
     <div class="hero__media">
-      <img data-slide data-name="Residência L&amp;M" class="is-active" src="assets/img/lm/09.webp" alt="Piscina e deck da Residência L&amp;M">
-      <img data-slide data-name="Rosewood São Paulo" src="assets/img/rosewood/14.webp" alt="Recepção do Rosewood São Paulo com vista para as árvores">
-      <img data-slide data-name="Residência D&amp;M" src="assets/img/dm/13.webp" alt="Jantar com parede de pedra da Residência D&amp;M">
-      <img data-slide data-name="Projeto Aura" src="assets/img/aura/00.webp" alt="Recepção do Projeto Aura com forro de madeira">
+      <img data-slide data-name="Residência L&amp;M" class="is-active" src="assets/img/lm/09.webp" alt="Piscina e deck da Residência L&amp;M" width="1170" height="877" fetchpriority="high">
+      <img data-slide data-name="Rosewood São Paulo" data-src="assets/img/rosewood/14.webp" alt="Recepção do Rosewood São Paulo com vista para as árvores">
+      <img data-slide data-name="Residência D&amp;M" data-src="assets/img/dm/13.webp" alt="Jantar com parede de pedra da Residência D&amp;M">
+      <img data-slide data-name="Projeto Aura" data-src="assets/img/aura/00.webp" alt="Recepção do Projeto Aura com forro de madeira">
     </div>
     <div class="hero__name">
-      <p class="hero__tag"><img src="assets/brand/tag.png" alt="" aria-hidden="true" width="1148" height="211"></p>
-      <h1 class="ln"><span><img src="assets/brand/word.png" alt="Isadora Figueiredo Arquitetura e Interiores" width="1692" height="145"></span></h1>
+      <p class="hero__tag"><img src="assets/brand/tag.webp" srcset="assets/brand/tag-480.webp 480w, assets/brand/tag.webp 1148w" sizes="(max-width: 900px) 170px, 21vw" alt="" aria-hidden="true" width="1148" height="211"></p>
+      <h1 class="ln"><span><img src="assets/brand/word.webp" srcset="assets/brand/word-800.webp 800w, assets/brand/word.webp 1692w" sizes="100vw" alt="Isadora Figueiredo Arquitetura e Interiores" width="1692" height="145" fetchpriority="high"></span></h1>
     </div>
   </section>
 
@@ -122,11 +122,11 @@
       <p class="eyebrow reveal">O que nos representa</p>
       <p class="ident__text" data-words>A onça que nos representa, a paleta de terras queimadas, a mistura de estampas que parece improvável até virar harmonia, a marcenaria fluida, os detalhes que só se revelam no <em>segundo olhar.</em></p>
       <figure class="ident__img ident__img--a img-reveal">
-        <div class="frame"><img data-parallax src="assets/img/aura/03.webp" alt="Nicho em arco com luminária e banquetas no Projeto Aura" loading="lazy"></div>
+        <div class="frame"><img width="1170" height="759" srcset="assets/img/aura/03-800.webp 800w, assets/img/aura/03.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/aura/03.webp" alt="Nicho em arco com luminária e banquetas no Projeto Aura" loading="lazy"></div>
         <figcaption>Projeto Aura, Chapadão do Sul</figcaption>
       </figure>
       <figure class="ident__img ident__img--b img-reveal">
-        <div class="frame"><img data-parallax src="assets/img/rosewood/16.webp" alt="Poltrona e estante iluminada em madeira no Rosewood São Paulo" loading="lazy"></div>
+        <div class="frame"><img width="1170" height="750" srcset="assets/img/rosewood/16-800.webp 800w, assets/img/rosewood/16.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/rosewood/16.webp" alt="Poltrona e estante iluminada em madeira no Rosewood São Paulo" loading="lazy"></div>
         <figcaption>Rosewood, São Paulo</figcaption>
       </figure>
       <div class="ident__side reveal">
@@ -144,31 +144,31 @@
       </div>
       <div class="works__grid">
         <a class="work work--a1 reveal" href="projeto.html?p=rosewood" data-transition="Rosewood São Paulo">
-          <div class="frame"><img data-parallax src="assets/img/rosewood/19.webp" alt="Corredor curvo revestido de madeira no Rosewood São Paulo" loading="lazy"></div>
+          <div class="frame"><img width="1170" height="751" srcset="assets/img/rosewood/19-800.webp 800w, assets/img/rosewood/19.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/rosewood/19.webp" alt="Corredor curvo revestido de madeira no Rosewood São Paulo" loading="lazy"></div>
           <div class="work__cap"><h3>Rosewood São Paulo</h3><p>Interiores</p></div>
         </a>
         <a class="work work--a2 reveal reveal-d1" href="projeto.html?p=icq" data-transition="ICQ">
-          <div class="frame"><img data-parallax src="assets/img/icq/01.webp" alt="Recepção do ICQ com painel ripado em madeira escura" loading="lazy"></div>
+          <div class="frame"><img width="1170" height="1463" srcset="assets/img/icq/01-800.webp 800w, assets/img/icq/01.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/icq/01.webp" alt="Recepção do ICQ com painel ripado em madeira escura" loading="lazy"></div>
           <div class="work__cap"><h3>ICQ</h3><p>Interiores</p></div>
         </a>
         <a class="work work--a3 reveal reveal-d2" href="projeto.html?p=maxi" data-transition="Apartamento Máxi">
-          <div class="frame"><img data-parallax src="assets/img/maxi/04.webp" alt="Papel de parede botânico escuro no lavabo do Apartamento Máxi" loading="lazy"></div>
+          <div class="frame"><img width="1170" height="1560" srcset="assets/img/maxi/04-800.webp 800w, assets/img/maxi/04.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/maxi/04.webp" alt="Papel de parede botânico escuro no lavabo do Apartamento Máxi" loading="lazy"></div>
           <div class="work__cap"><h3>Apartamento Máxi</h3><p>Interiores</p></div>
         </a>
         <a class="work work--a4 reveal" href="projeto.html?p=lm" data-transition="Residência L&amp;M">
-          <div class="frame"><img data-parallax src="assets/img/lm/07.webp" alt="Piscina e fachada da Residência L&amp;M ao entardecer" loading="lazy"></div>
+          <div class="frame"><img width="1170" height="877" srcset="assets/img/lm/07-800.webp 800w, assets/img/lm/07.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/lm/07.webp" alt="Piscina e fachada da Residência L&amp;M ao entardecer" loading="lazy"></div>
           <div class="work__cap"><h3>Residência L&amp;M</h3><p>Arquitetura</p></div>
         </a>
         <a class="work work--b1 reveal" href="projeto.html?p=aura" data-transition="Projeto Aura">
-          <div class="frame"><img data-parallax src="assets/img/aura/05.webp" alt="Sala de espera com nichos iluminados no Projeto Aura" loading="lazy"></div>
+          <div class="frame"><img width="1170" height="759" srcset="assets/img/aura/05-800.webp 800w, assets/img/aura/05.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/aura/05.webp" alt="Sala de espera com nichos iluminados no Projeto Aura" loading="lazy"></div>
           <div class="work__cap"><h3>Projeto Aura</h3><p>Interiores</p></div>
         </a>
         <a class="work work--b2 reveal reveal-d1" href="projeto.html?p=dm" data-transition="Residência D&amp;M">
-          <div class="frame"><img data-parallax src="assets/img/dm/05.webp" alt="Estar e jantar sob o telhado de madeira da Residência D&amp;M" loading="lazy"></div>
+          <div class="frame"><img width="1170" height="658" srcset="assets/img/dm/05-800.webp 800w, assets/img/dm/05.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/dm/05.webp" alt="Estar e jantar sob o telhado de madeira da Residência D&amp;M" loading="lazy"></div>
           <div class="work__cap"><h3>Residência D&amp;M</h3><p>Interiores</p></div>
         </a>
         <a class="work work--b3 reveal" href="projeto.html?p=cr" data-transition="Residência C&amp;R">
-          <div class="frame"><img data-parallax src="assets/img/cr/00.webp" alt="Fachada em pedra e madeira da Residência C&amp;R" loading="lazy"></div>
+          <div class="frame"><img width="1170" height="975" srcset="assets/img/cr/00-800.webp 800w, assets/img/cr/00.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/cr/00.webp" alt="Fachada em pedra e madeira da Residência C&amp;R" loading="lazy"></div>
           <div class="work__cap"><h3>Residência C&amp;R</h3><p>Arquitetura</p></div>
         </a>
       </div>
@@ -178,7 +178,7 @@
   <!-- CTA 1 -->
   <section class="section cta" style="padding-top:0">
     <div class="wrap cta__inner">
-      <img class="cta__jag" src="assets/brand/jaguar-clay.png" alt="" aria-hidden="true">
+      <img class="cta__jag" src="assets/brand/jaguar-clay-240.webp" srcset="assets/brand/jaguar-clay-240.webp 240w, assets/brand/jaguar-clay-480.webp 480w" sizes="120px" alt="" aria-hidden="true" width="1073" height="430" loading="lazy">
       <h2 class="display reveal-lines"><span class="ln"><span>Todo projeto começa</span></span><span class="ln"><span>com uma <em>boa conversa.</em></span></span></h2>
       <div class="cta__row reveal">
         <p>Conte o que você imagina para o projeto da sua casa, do seu apartamento ou do seu espaço de trabalho, em Maringá ou em outra cidade. A&nbsp;equipe responde e marca um primeiro encontro.</p>
@@ -194,11 +194,11 @@
         <h2 class="display reveal-lines"><span class="ln"><span>Projetos</span></span></h2>
       </div>
       <div class="mosaic reveal">
-        <a class="mosaic__item" href="projeto.html?p=rosewood#foto-17" data-transition="Rosewood São Paulo"><img src="assets/img/rosewood/17.webp" alt="Poltronas diante da janela no Rosewood São Paulo" loading="lazy"></a>
-        <a class="mosaic__item" href="projeto.html?p=dm#foto-3" data-transition="Residência D&amp;M"><img src="assets/img/dm/03.webp" alt="Lareira entre estantes em arco na Residência D&amp;M" loading="lazy"></a>
-        <a class="mosaic__item" href="projeto.html?p=lm#foto-8" data-transition="Residência L&amp;M"><img src="assets/img/lm/08.webp" alt="Casa de pedra junto à piscina na Residência L&amp;M" loading="lazy"></a>
-        <a class="mosaic__item" href="projeto.html?p=icq#foto-12" data-transition="ICQ"><img src="assets/img/icq/12.webp" alt="Mármore e estante iluminada no ICQ" loading="lazy"></a>
-        <a class="mosaic__item" href="projeto.html?p=maxi#foto-7" data-transition="Apartamento Máxi"><img src="assets/img/maxi/07.webp" alt="Suíte com papel de parede floral no Apartamento Máxi" loading="lazy"></a>
+        <a class="mosaic__item" href="projeto.html?p=rosewood#foto-17" data-transition="Rosewood São Paulo"><img width="1170" height="750" srcset="assets/img/rosewood/17-800.webp 800w, assets/img/rosewood/17.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" src="assets/img/rosewood/17.webp" alt="Poltronas diante da janela no Rosewood São Paulo" loading="lazy"></a>
+        <a class="mosaic__item" href="projeto.html?p=dm#foto-3" data-transition="Residência D&amp;M"><img width="1170" height="658" srcset="assets/img/dm/03-800.webp 800w, assets/img/dm/03.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" src="assets/img/dm/03.webp" alt="Lareira entre estantes em arco na Residência D&amp;M" loading="lazy"></a>
+        <a class="mosaic__item" href="projeto.html?p=lm#foto-8" data-transition="Residência L&amp;M"><img width="1170" height="877" srcset="assets/img/lm/08-800.webp 800w, assets/img/lm/08.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" src="assets/img/lm/08.webp" alt="Casa de pedra junto à piscina na Residência L&amp;M" loading="lazy"></a>
+        <a class="mosaic__item" href="projeto.html?p=icq#foto-12" data-transition="ICQ"><img width="1170" height="936" srcset="assets/img/icq/12-800.webp 800w, assets/img/icq/12.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" src="assets/img/icq/12.webp" alt="Mármore e estante iluminada no ICQ" loading="lazy"></a>
+        <a class="mosaic__item" href="projeto.html?p=maxi#foto-7" data-transition="Apartamento Máxi"><img width="1170" height="1560" srcset="assets/img/maxi/07-800.webp 800w, assets/img/maxi/07.webp 1170w" sizes="auto, (max-width: 900px) 100vw, 50vw" src="assets/img/maxi/07.webp" alt="Suíte com papel de parede floral no Apartamento Máxi" loading="lazy"></a>
       </div>
       <div class="gteaser__foot reveal">
         <p>Casas, apartamentos e espaços de atendimento, separados por ambiente, da fachada ao último detalhe da marcenaria.</p>
@@ -211,7 +211,7 @@
   <section class="section about" id="arquiteta">
     <div class="wrap about__grid">
       <figure class="about__img img-reveal">
-        <div class="frame"><img data-parallax src="assets/img/isadora/01.webp" alt="Isadora Figueiredo sentada em poltrona clara diante de painéis de madeira" loading="lazy"></div>
+        <div class="frame"><img width="1440" height="1920" srcset="assets/img/isadora/01-800.webp 800w, assets/img/isadora/01-1200.webp 1200w, assets/img/isadora/01.webp 1440w" sizes="auto, (max-width: 900px) 100vw, 50vw" data-parallax src="assets/img/isadora/01.webp" alt="Isadora Figueiredo sentada em poltrona clara diante de painéis de madeira" loading="lazy"></div>
       </figure>
       <div class="about__text">
         <p class="eyebrow reveal">A arquiteta</p>
@@ -234,21 +234,21 @@
           <p class="office__lead reveal">No escritório de arquitetura da Rua Luiz Gama, a&nbsp;equipe acompanha cada obra de perto. Do desenho da fachada ao último puxador da marcenaria, tudo passa pelas mesmas mãos.</p>
         </div>
         <figure class="office__img img-reveal">
-          <div class="frame"><img src="assets/img/escritorio/00.webp?v=2" alt="Isadora Figueiredo ajustando uma luminária diante de painéis de madeira no escritório" loading="lazy"></div>
+          <div class="frame"><img width="874" height="1141" srcset="assets/img/escritorio/00-800.webp?v=2 800w, assets/img/escritorio/00.webp?v=2 874w" sizes="auto, (max-width: 900px) 100vw, 50vw" src="assets/img/escritorio/00.webp?v=2" alt="Isadora Figueiredo ajustando uma luminária diante de painéis de madeira no escritório" loading="lazy"></div>
         </figure>
       </div>
       <div class="office__info reveal">
           <div>
-            <h4>Endereço</h4>
+            <h3>Endereço</h3>
             <p>Rua Luiz Gama, 662<br>Maringá, Paraná</p>
             <a class="link-arrow link-arrow--out" href="https://maps.google.com/?q=Rua+Luiz+Gama+662+Maringa+PR" target="_blank" rel="noopener">Ver no mapa <svg class="i"><use href="#i-out"/></svg></a>
           </div>
           <div>
-            <h4>Contato</h4>
+            <h3>Contato</h3>
             <p><a href="https://wa.me/5544991344852?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." target="_blank" rel="noopener">WhatsApp (44) 99134-4852</a></p>
           </div>
           <div>
-            <h4>Redes</h4>
+            <h3>Redes</h3>
             <p><a href="https://www.instagram.com/isadorafigueiredo.arq/" target="_blank" rel="noopener">Instagram @isadorafigueiredo.arq</a></p>
           </div>
         </div>
@@ -309,7 +309,7 @@
     </div>
     <footer class="footer">
       <div class="wrap footer__row">
-        <img class="footer__word" src="assets/brand/word-420.png" alt="Isadora Figueiredo">
+        <img class="footer__word" src="assets/brand/word-420.webp" alt="Isadora Figueiredo" width="420" height="36" loading="lazy">
         <nav class="footer__links" aria-label="Contatos">
           <a href="https://maps.google.com/?q=Rua+Luiz+Gama+662+Maringa+PR" target="_blank" rel="noopener">Rua Luiz Gama, 662, Maringá, PR</a>
           <a href="https://wa.me/5544991344852?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." target="_blank" rel="noopener">WhatsApp</a>
@@ -323,7 +323,7 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
-<script src="assets/data.js?v=55"></script>
-<script src="assets/main.js?v=55"></script>
+<script src="assets/data.js?v=59"></script>
+<script src="assets/main.js?v=59"></script>
 </body>
 </html>
