@@ -677,6 +677,8 @@ html.pt-arrive::after { content: var(--pt-label, ""); animation: ptOut .9s .15s 
   .fronts__float { display: none; }
 }
 @media (max-width: 1100px) {
+  .contact__main { grid-column: 1 / 19; }   /* botão e Instagram na mesma linha */
+  .contact__jag { grid-column: 19 / 25; }
   .header__nav { gap: 24px; font-size: 13px; }
   /* Projetos em destaque: grade de duas colunas em tablets */
   .works__grid { grid-template-columns: 1fr 1fr; column-gap: 16px; }
@@ -832,6 +834,15 @@ html.pt-arrive::after { content: var(--pt-label, ""); animation: ptOut .9s .15s 
   .lb__nav { display: none; }
   .lb__stage { margin-inline: 10px; }
   .lb__top { gap: 14px; }
+}
+/* Contato e rodapé no desktop: no máximo três quartos da altura da tela */
+@media (min-width: 901px) {
+  .contact { padding-top: clamp(56px, 8vh, 110px); }
+  .contact__big { font-size: clamp(48px, min(7.6vw, 9.5vh), 150px); margin-top: 20px; }
+  .contact__actions { margin-top: clamp(24px, 4vh, 40px); }
+  .footer { margin-top: clamp(32px, 5vh, 72px); }
+  .footer__row { margin-top: 0; padding-block: clamp(20px, 3.5vh, 36px) clamp(18px, 3vh, 28px); }
+  .contact__jag { max-width: min(540px, 52vh); }
 }
 /* Telas muito grandes: conteúdo mais largo e texto um pouco maior */
 @media (min-width: 1920px) {
