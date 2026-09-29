@@ -18,10 +18,11 @@
     return;
   }
 
-  document.title = `${p.name} | Isadora Figueiredo Arquitetura & Interiores`;
-  document.querySelector('meta[name=description]')?.setAttribute('content', `${p.name}. ${p.lead}`);
+  const kind = `projeto de ${catName[p.cat].toLowerCase()}`;
+  document.title = `${p.name}, ${kind} | Isadora Figueiredo, arquiteta em Maringá`;
+  document.querySelector('meta[name=description]')?.setAttribute('content', `${p.name}, ${kind} de Isadora Figueiredo${p.city ? `, em ${p.city}` : ''}. ${p.lead}`);
 
-  hero.insertAdjacentHTML('afterbegin', `<img src="${src(p.slug, p.cover)}" alt="${esc(p.name)}">`);
+  hero.insertAdjacentHTML('afterbegin', `<img src="${src(p.slug, p.cover)}" alt="${esc(p.name)}, ${kind} de Isadora Figueiredo">`);
   hero.querySelector('[data-p-name]').textContent = p.name;
   hero.querySelector('[data-p-meta]').textContent = [catName[p.cat], p.city].filter(Boolean).join(', ');
 
@@ -71,4 +72,23 @@
   IF.noWidows(body);
   IF.noWidows(hero);
   IF.lenis?.resize();
+
+  // Vindo da página de Projetos: #foto-N rola até a foto clicada, #<slug>-amb-K até o ambiente
+  const target = (() => {
+    const m = location.hash.match(/^#foto-(\d+)$/);
+    if (m) return body.querySelector(`.room__grid [data-photo="${m[1]}"]`);
+    return location.hash ? body.querySelector(decodeURIComponent(location.hash)) : null;
+  })();
+  if (target) {
+    const go = () => {
+      const h = target.getBoundingClientRect().height;
+      const photo = target.matches('[data-photo]');
+      const offset = photo ? -Math.max(90, (innerHeight - h) / 2) : -90;
+      if (IF.lenis) IF.lenis.scrollTo(target, { immediate: true, force: true, offset });
+      else scrollTo(0, target.getBoundingClientRect().top + scrollY + offset);
+      if (photo) { target.classList.add('is-target'); setTimeout(() => target.classList.remove('is-target'), 2400); }
+    };
+    requestAnimationFrame(() => requestAnimationFrame(go));
+    document.fonts?.ready.then(() => setTimeout(go, 60));
+  }
 })();

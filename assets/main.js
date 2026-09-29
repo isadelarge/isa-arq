@@ -395,7 +395,7 @@
       <div class="room__grid">
         ${cells(p, r.photos).map((c) => `
           <button class="${c.wide ? 'is-wide' : ''}" data-photo="${c.i}" aria-label="Ampliar foto de ${esc(r.name)}">
-            <div class="frame" style="aspect-ratio:${c.ar}"><img src="${src(p.slug, c.i)}" alt="${esc(p.name)}, ${esc(r.name)}" loading="lazy"></div>
+            <div class="frame" style="aspect-ratio:${c.ar}"><img src="${src(p.slug, c.i)}" alt="${esc(r.name)}, ${esc(p.name)}, projeto de ${catName[p.cat].toLowerCase()}" loading="lazy"></div>
           </button>`).join('')}
       </div>
     </section>`).join('');
@@ -452,7 +452,7 @@
   }
 
   // Sem palavra sozinha na última linha: une as duas últimas palavras de cada texto
-  const WIDOW = 'p, h1, h2, h3, h4, dd, figcaption, blockquote, li, .chip, .lead';
+  const WIDOW = 'p, h1, h2, h3, h4, dd, figcaption, blockquote, li, .lead';
   const noWidows = (scope = document) => scope.querySelectorAll(WIDOW).forEach((el) => {
     if (el.dataset.nw || el.closest('.ln') || el.querySelector(WIDOW)) return;
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
@@ -472,7 +472,7 @@
   noWidows();
 
   // Toque: linha embaixo e troca de cor ficam visíveis por um instante, também no celular
-  const TAP = '.btn, .link-arrow, .footer__links a, .menu__links a, .contact__link, .header__nav a, .icon-btn, .chip, .filters button, .views button, .plist a';
+  const TAP = '.btn, .link-arrow, .footer__links a, .menu__links a, .contact__link, .header__nav a, .icon-btn, .filters button, .tabs button';
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest(TAP); if (!el) return;
     el.classList.add('is-tap');
