@@ -27,18 +27,27 @@
   hero.querySelector('[data-p-meta]').textContent = [catName[p.cat], p.city].filter(Boolean).join(', ');
 
   const next = P[(P.indexOf(p) + 1) % P.length];
+  // Ficha técnica, como no Taipa: todos os campos aparecem; o que ainda falta em data.js vira um tracinho
   const specs = [
-    ['Categoria', catName[p.cat]],
-    p.city && ['Local', p.city],
-    ['Ambientes', p.rooms.length],
-    ['Fotos', p.dims.length],
-  ].filter(Boolean);
+    ['Cliente', p.client], ['Local', p.city], ['Tipologia', p.type],
+    ['Área construída', p.area], ['Terreno', p.site], ['Pavimentos', p.floors], ['Conclusão', p.year],
+    ['Escopo', `Projeto de ${catName[p.cat].toLowerCase()}`], ['Equipe', 'Isadora Figueiredo e equipe'],
+    ['Fotografia', p.photo],
+  ];
+  const val = (v) => (v || v === 0) ? esc(v) : '<span class="is-empty" aria-label="a informar">–</span>';
+  // Números abaixo da ficha: área, ano e ambientes
+  const num = (v) => v && String(v).replace(/\s*m²$/, '');
+  const metrics = [[num(p.area), 'm² construídos'], [p.year, 'ano de conclusão'], [p.rooms.length, 'ambientes']];
 
   body.innerHTML = `
     <section class="section" style="padding-bottom:0">
       <div class="wrap p-intro">
         <a class="p-back link-arrow reveal" href="projetos.html"><svg class="i"><use href="#i-arrow-l"/></svg>Projetos</a>
-        <dl class="p-specs reveal">${specs.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+        <details class="p-details reveal" data-p-details open>
+          <summary class="p-details__toggle"><span class="p-details__more">Ver mais detalhes</span><span class="p-details__less">Ver menos detalhes</span><svg class="i"><use href="#i-plus"/></svg></summary>
+          <dl class="p-specs">${specs.map(([k, v]) => `<dt>${k}</dt><dd>${val(v)}</dd>`).join('')}</dl>
+          <div class="p-metrics">${metrics.map(([n, l]) => `<div><span class="p-metrics__num">${val(n)}</span><span>${l}</span></div>`).join('')}</div>
+        </details>
         <div class="p-text">
           <p class="lead reveal">${esc(p.lead)}</p>
           <p class="reveal reveal-d1">${esc(p.text)}</p>
@@ -49,7 +58,6 @@
     <section class="p-tour wrap" id="ambientes">
       <div class="section__head">
         <h2 class="display reveal-lines"><span class="ln"><span>Ambientes</span></span></h2>
-        <p class="gp__meta reveal">${p.rooms.length} ambientes, ${count(p.dims.length)}</p>
       </div>
       <div class="reveal">${stripHTML(p)}</div>
       ${roomsHTML(p)}
@@ -65,6 +73,15 @@
         </div>
       </div>
     </a>`;
+
+  // No desktop a ficha fica sempre aberta; no celular abre em "Ver mais detalhes"
+  const details = body.querySelector('[data-p-details]');
+  const mq = matchMedia('(max-width: 900px)');
+  const syncDetails = () => { details.open = !mq.matches; };
+  mq.addEventListener('change', syncDetails);
+  syncDetails();
+  details.querySelector('summary').addEventListener('click', (e) => { if (!mq.matches) e.preventDefault(); });
+  details.addEventListener('toggle', () => setTimeout(() => IF.lenis?.resize(), 520));
 
   bindTour(body.querySelector('.p-tour'), p);
   observe(body);

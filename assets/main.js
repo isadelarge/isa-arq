@@ -16,6 +16,7 @@
     <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M1.5 8h12.5M9.5 3.5 14 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
     <symbol id="i-arrow-l" viewBox="0 0 16 16"><path d="M14.5 8H2M6.5 3.5 2 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
     <symbol id="i-up" viewBox="0 0 16 16"><path d="M8 14.5V2M3.5 6.5 8 2l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
     <symbol id="i-close" viewBox="0 0 16 16"><path d="M3 3l10 10M13 3 3 13" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
     <symbol id="i-out" viewBox="0 0 16 16"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
     <symbol id="i-grid" viewBox="0 0 16 16"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
@@ -269,30 +270,20 @@
   addEventListener('resize', frame);
   frame();
 
-  // Cursor "Ver" sobre fotos e imagem flutuante nas frentes de atuação
-  const cursor = document.querySelector('[data-cursor]');
+  // Imagem flutuante nas frentes de atuação
   const float = document.querySelector('[data-fronts-float]');
   const fine = matchMedia('(hover: hover)').matches;
-  if (fine && (cursor || float)) {
-    let tx = 0, ty = 0, cx = 0, cy = 0, fx = 0, fy = 0;
-    const SEL = '.work, .mosaic__item, .room__grid button';
+  if (fine && float) {
+    let tx = 0, ty = 0, fx = 0, fy = 0;
     addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
-    document.addEventListener('pointerover', (e) => { if (e.target.closest(SEL)) cursor?.classList.add('is-on'); });
-    document.addEventListener('pointerout', (e) => { if (e.target.closest(SEL) && !e.relatedTarget?.closest?.(SEL)) cursor?.classList.remove('is-on'); });
-    if (float) {
-      const img = float.querySelector('img');
-      document.querySelectorAll('[data-fronts] a').forEach((a) => {
-        a.addEventListener('pointerenter', () => { img.src = a.dataset.img; float.classList.add('is-on'); });
-        a.addEventListener('pointerleave', () => float.classList.remove('is-on'));
-      });
-    }
+    const img = float.querySelector('img');
+    document.querySelectorAll('[data-fronts] a').forEach((a) => {
+      a.addEventListener('pointerenter', () => { img.src = a.dataset.img; float.classList.add('is-on'); });
+      a.addEventListener('pointerleave', () => float.classList.remove('is-on'));
+    });
     const follow = () => {
-      cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
-      if (cursor) cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
-      if (float) {
-        fx += (tx - fx) * 0.1; fy += (ty - fy) * 0.1;
-        float.style.transform = `translate3d(${fx + 30}px, ${fy - float.offsetHeight / 2}px, 0)`;
-      }
+      fx += (tx - fx) * 0.1; fy += (ty - fy) * 0.1;
+      float.style.transform = `translate3d(${fx + 30}px, ${fy - float.offsetHeight / 2}px, 0)`;
       requestAnimationFrame(follow);
     };
     follow();
@@ -496,12 +487,50 @@
   });
   dots();
 
-  // "Ver mais" da seção da arquiteta no celular
-  document.querySelectorAll('[data-more-about]').forEach((b) => b.addEventListener('click', () => {
-    const box = b.closest('.about__text');
-    box.classList.add('is-open'); b.setAttribute('aria-expanded', 'true');
-    IF.lenis?.resize();
-  }));
+  // Foto presa ao lado do texto: o texto sobe da base até o topo da foto, sem sair da tela antes dela.
+  // --pin-t guarda a altura do texto, que o CSS usa para calcular quanto a foto fica parada.
+  const pinTexts = [...document.querySelectorAll('[data-pin-text]')];
+  const setPin = (el) => {
+    const k = [...el.children]; if (!k.length) return;
+    const last = k[k.length - 1];
+    el.style.setProperty('--pin-t', `${last.offsetTop + last.offsetHeight - k[0].offsetTop}px`);
+  };
+  if (pinTexts.length) {
+    const ro = new ResizeObserver(() => { pinTexts.forEach(setPin); lenis?.resize(); });
+    pinTexts.forEach((el) => { setPin(el); [...el.children].forEach((c) => ro.observe(c)); });
+    document.fonts?.ready.then(() => pinTexts.forEach(setPin));
+  }
+
+  // "Ver mais" e "Ver menos" da seção da arquiteta no celular: a altura desliza e o texto aparece aos poucos
+  const MORE_MS = 800;
+  const slide = (box, open) => {
+    if (box.dataset.busy) return;
+    const more = box.querySelector('[data-more-about]');
+    const from = box.offsetHeight;
+    box.classList.toggle('is-open', open);
+    const to = box.offsetHeight;
+    more.setAttribute('aria-expanded', String(open));
+    if (reduce) { lenis?.resize(); return; }
+    box.dataset.busy = '1';
+    if (!open) box.classList.add('is-open', 'is-closing');   // o texto some enquanto a caixa encolhe
+    else box.classList.add('is-opening');
+    box.style.height = `${from}px`; box.style.overflow = 'hidden';
+    box.offsetHeight;
+    box.style.transition = `height ${MORE_MS}ms cubic-bezier(0.45, 0, 0.2, 1)`;
+    box.style.height = `${to}px`;
+    // Ao recolher, volta para o ponto em que o texto foi aberto, se ele tiver ficado acima da tela
+    if (!open && more.closest('p').getBoundingClientRect().top < 80) scrollToEl(more.closest('p'), -120);
+    setTimeout(() => {
+      box.classList.remove('is-opening', 'is-closing');
+      if (!open) box.classList.remove('is-open');
+      box.style.height = box.style.overflow = box.style.transition = '';
+      delete box.dataset.busy;
+      lenis?.resize();
+      (open ? box.querySelector('[data-less-about]') : more).focus({ preventScroll: true });
+    }, MORE_MS);
+  };
+  document.querySelectorAll('[data-more-about]').forEach((b) => b.addEventListener('click', () => slide(b.closest('.about__text'), true)));
+  document.querySelectorAll('[data-less-about]').forEach((b) => b.addEventListener('click', () => slide(b.closest('.about__text'), false)));
 
   window.IF = { P, bySlug, src, catName, esc, lenis, lock, scrollToEl, observe, scanImgs, openLb, sequence, stripHTML, roomsHTML, bindTour, mosaicPick, count, escStack, noWidows, wa, dots };
 })();
