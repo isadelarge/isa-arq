@@ -253,6 +253,10 @@ html.is-intro, html.is-locked { overflow: hidden; }
 .hero__name { position: absolute; left: 0; right: 0; bottom: clamp(14px, 2.2vw, 36px); z-index: 2; padding-inline: clamp(12px, 1.8vw, 32px); }
 .hero__name h1 { margin: 0; line-height: 0; }
 .hero__name img { display: block; width: 100%; height: auto; filter: brightness(0) invert(1); }
+/* Assinatura da marca sobre o nome, alinhada ao I */
+.hero__tag { margin: 0 0 clamp(4px, .9vw, 16px) clamp(2px, .35vw, 8px); line-height: 0; opacity: 0; transition: opacity 1.4s .5s var(--ease); }
+.hero__name .hero__tag img { width: clamp(170px, 21vw, 460px); }
+.is-ready .hero__tag { opacity: 1; }
 
 /* ---------- Revelações ---------- */
 .ln { display: block; overflow: hidden; padding-block: .06em .14em; margin-block: -.06em -.14em; }
