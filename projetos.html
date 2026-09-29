@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projeto | Isadora Figueiredo Arquitetura &amp; Interiores</title>
-  <meta name="description" content="Projeto de Isadora Figueiredo Arquitetura &amp; Interiores.">
+  <title>Projetos | Isadora Figueiredo Arquitetura &amp; Interiores</title>
+  <meta name="description" content="Projetos de Isadora Figueiredo Arquitetura &amp; Interiores, em galeria por ambiente ou em lista.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
-  <meta property="og:title" content="Projeto | Isadora Figueiredo Arquitetura &amp; Interiores">
-  <meta property="og:description" content="Projeto de Isadora Figueiredo Arquitetura &amp; Interiores.">
+  <meta property="og:title" content="Projetos | Isadora Figueiredo Arquitetura &amp; Interiores">
+  <meta property="og:description" content="Projetos de Isadora Figueiredo Arquitetura &amp; Interiores, em galeria por ambiente ou em lista.">
   <meta property="og:image" content="assets/img/lm/07.webp">
   <link rel="icon" href="assets/brand/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
       <img src="assets/brand/jaguar-clay.png" alt="" width="1073" height="430">
     </a>
     <nav class="header__nav" aria-label="Principal">
-      <a href="projetos.html">Projetos</a>
+      <a href="projetos.html" aria-current="page">Projetos</a>
       <a href="arquiteta.html">A arquiteta</a>
       <a href="escritorio.html">Escritório</a>
     </nav>
@@ -54,14 +54,38 @@
 </div>
 
 <main id="topo">
-  <!-- Preenchido por assets/projeto.js a partir de ?p=slug -->
-  <section class="p-hero" data-hero data-p-hero>
-    <div class="wrap p-hero__content">
-      <h1 class="display"><span class="ln"><span data-p-name></span></span></h1>
-      <p class="p-hero__meta" data-p-meta></p>
+  <section class="page-head wrap">
+    <div class="page-head__top">
+      <h1 class="display reveal-lines"><span class="ln"><span>Projetos</span></span></h1>
+      <div class="views reveal" role="group" aria-label="Modo de visualização" data-views>
+        <button aria-pressed="true" data-view="galeria">Galeria</button>
+        <button aria-pressed="false" data-view="lista">Lista</button>
+      </div>
+    </div>
+    <div class="page-head__row">
+      <p class="reveal">Todos os projetos, separados por ambiente.<br>Abra um projeto para ver cada espaço em detalhe.</p>
+      <div class="filters reveal" role="group" aria-label="Filtrar projetos" data-filters>
+        <button aria-pressed="true" data-filter="todos">Todos</button>
+        <button aria-pressed="false" data-filter="arquitetura">Arquitetura</button>
+        <button aria-pressed="false" data-filter="interiores">Interiores</button>
+      </div>
     </div>
   </section>
-  <div data-p-body></div>
+
+  <!-- Galeria: um bloco por projeto -->
+  <div class="wrap" data-gallery></div>
+
+  <!-- Lista: categorias, nomes e a foto do projeto sob o cursor -->
+  <section class="wrap plist" data-list hidden>
+    <div class="plist__cats" role="group" aria-label="Filtrar projetos" data-list-cats>
+        <button aria-pressed="true" data-filter="todos">Todos</button>
+        <button aria-pressed="false" data-filter="arquitetura">Arquitetura</button>
+        <button aria-pressed="false" data-filter="interiores">Interiores</button>
+      </div>
+    <ul class="plist__names" data-list-names></ul>
+    <figure class="plist__preview" aria-hidden="true" data-list-preview></figure>
+  </section>
+  <div class="gallery-end"></div>
 
   <section class="contact" id="contato">
     <div class="wrap">
@@ -88,11 +112,23 @@
   </section>
 </main>
 
+<!-- Tour de fotos de um projeto, por ambiente -->
+<div class="tour" data-tour data-lenis-prevent tabindex="-1" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="tour-name">
+  <div class="tour__top">
+    <div class="wrap tour__bar">
+      <button class="icon-btn" data-tour-close aria-label="Voltar para os projetos"><svg class="i"><use href="#i-arrow-l"/></svg></button>
+      <p class="tour__name" id="tour-name" data-tour-name></p>
+      <a class="btn btn--sm" data-tour-page href="#">Página do projeto <svg class="i"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+  <div class="wrap tour__body" data-tour-body></div>
+</div>
+
 <div class="cursor" data-cursor aria-hidden="true"><span>Ver</span></div>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 <script src="assets/data.js?v=20"></script>
 <script src="assets/main.js?v=20"></script>
-<script src="assets/projeto.js?v=20"></script>
+<script src="assets/projetos.js?v=20"></script>
 </body>
 </html>

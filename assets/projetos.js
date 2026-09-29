@@ -1,13 +1,18 @@
-// Galeria: um bloco por projeto (mosaico de cinco fotos) e o tour de fotos por ambiente
+// Projetos: duas formas de ver, galeria (um bloco por projeto, com tour por ambiente) ou lista (nomes com a foto ao lado)
 (() => {
   const { P, bySlug, src, catName, esc, lock, observe, scanImgs, stripHTML, roomsHTML, bindTour, mosaicPick, count, escStack, scrollToEl } = window.IF;
-  const list = document.querySelector('[data-gallery]');
-  const pindex = document.querySelector('[data-pindex]');
+  const gallery = document.querySelector('[data-gallery]');
+  const listSec = document.querySelector('[data-list]');
+  const names = document.querySelector('[data-list-names]');
+  const preview = document.querySelector('[data-list-preview]');
+  const viewBtns = [...document.querySelectorAll('[data-view]')];
   const filterBtns = [...document.querySelectorAll('[data-filter]')];
   const meta = (p) => [catName[p.cat], p.city].filter(Boolean).join(', ');
   const roomOf = (p, i) => p.rooms.findIndex((r) => r.photos.includes(i));
+  const state = { view: 'galeria', cat: 'todos' };
 
-  list.innerHTML = P.map((p) => {
+  // ---------- Galeria ----------
+  gallery.innerHTML = P.map((p) => {
     const total = p.dims.length;
     return `
     <section class="gp" id="g-${p.slug}" data-cat="${p.cat}">
@@ -31,24 +36,54 @@
       </div>
     </section>`;
   }).join('');
-  pindex.innerHTML = P.map((p) => `<a href="#g-${p.slug}" data-cat="${p.cat}">${esc(p.name)}</a>`).join('');
-  observe(list); observe(pindex.parentElement); scanImgs(list); IF.noWidows(list);
-  IF.dots(list);
+  observe(gallery); scanImgs(gallery); IF.noWidows(gallery); IF.dots(gallery);
 
-  // Filtros: Todos, Arquitetura, Interiores
-  const setFilter = (cat) => {
-    filterBtns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.filter === cat));
-    document.querySelectorAll('.gp, .pindex a').forEach((el) => { el.hidden = cat !== 'todos' && el.dataset.cat !== cat; });
+  // ---------- Lista ----------
+  names.innerHTML = P.map((p) => `
+    <li data-cat="${p.cat}">
+      <a href="projeto.html?p=${p.slug}" data-transition="${esc(p.name)}" data-slug="${p.slug}">
+        <img class="plist__thumb" src="${src(p.slug, p.cover)}" alt="" loading="lazy">
+        <span class="plist__name">${esc(p.name)}</span>
+        <span class="plist__meta">${esc(meta(p))}</span>
+      </a>
+    </li>`).join('');
+  preview.innerHTML = `<div class="plist__shot">${P.map((p) => `<img src="${src(p.slug, p.cover)}" alt="" data-slug="${p.slug}" loading="lazy">`).join('')}</div>
+    <figcaption><span data-cap-name></span><span data-cap-meta></span></figcaption>`;
+  const shots = [...preview.querySelectorAll('img')];
+  const capName = preview.querySelector('[data-cap-name]'), capMeta = preview.querySelector('[data-cap-meta]');
+  const showPreview = (slug) => {
+    const p = bySlug[slug]; if (!p) return;
+    shots.forEach((im) => im.classList.toggle('is-on', im.dataset.slug === slug));
+    capName.textContent = p.name; capMeta.textContent = meta(p);
+    names.querySelectorAll('a').forEach((a) => a.classList.toggle('is-on', a.dataset.slug === slug));
+  };
+  names.addEventListener('pointerover', (e) => { const a = e.target.closest('a[data-slug]'); if (a) showPreview(a.dataset.slug); });
+  names.addEventListener('focusin', (e) => { const a = e.target.closest('a[data-slug]'); if (a) showPreview(a.dataset.slug); });
+  const firstVisible = () => names.querySelector('li:not([hidden]) a')?.dataset.slug;
+
+  // ---------- Estado: modo de ver e categoria, guardados na URL ----------
+  const apply = () => {
+    document.body.dataset.view = state.view;
+    viewBtns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.view === state.view));
+    filterBtns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.filter === state.cat));
+    const hide = (el) => { el.hidden = state.cat !== 'todos' && el.dataset.cat !== state.cat; };
+    gallery.querySelectorAll('.gp').forEach(hide);
+    names.querySelectorAll('li').forEach(hide);
+    gallery.hidden = state.view !== 'galeria';
+    listSec.hidden = state.view !== 'lista';
+    if (state.view === 'lista') { showPreview(firstVisible()); observe(listSec); }
+    const url = new URL(location.href);
+    state.cat === 'todos' ? url.searchParams.delete('c') : url.searchParams.set('c', state.cat);
+    state.view === 'galeria' ? url.searchParams.delete('v') : url.searchParams.set('v', state.view);
+    history.replaceState(history.state, '', url);
     IF.lenis?.resize();
   };
-  filterBtns.forEach((b) => b.addEventListener('click', () => {
-    setFilter(b.dataset.filter);
-    const url = new URL(location.href);
-    if (b.dataset.filter === 'todos') url.searchParams.delete('c'); else url.searchParams.set('c', b.dataset.filter);
-    history.replaceState(history.state, '', url);
-  }));
-  const initial = new URLSearchParams(location.search).get('c');
-  if (initial && catName[initial]) setFilter(initial);
+  viewBtns.forEach((b) => b.addEventListener('click', () => { state.view = b.dataset.view; apply(); }));
+  filterBtns.forEach((b) => b.addEventListener('click', () => { state.cat = b.dataset.filter; apply(); }));
+  const qs = new URLSearchParams(location.search);
+  if (catName[qs.get('c')]) state.cat = qs.get('c');
+  if (qs.get('v') === 'lista') state.view = 'lista';
+  apply();
   if (location.hash.startsWith('#g-')) {
     const t = document.querySelector(location.hash);
     if (t) setTimeout(() => scrollToEl(t, -70), 400);
@@ -98,7 +133,7 @@
   addEventListener('popstate', () => close(true));
   tour.querySelector('[data-tour-close]').addEventListener('click', () => close());
 
-  list.addEventListener('click', (e) => {
+  gallery.addEventListener('click', (e) => {
     const b = e.target.closest('[data-tour-open]');
     if (!b) return;
     const p = bySlug[b.dataset.tourOpen];

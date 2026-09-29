@@ -472,7 +472,7 @@
   noWidows();
 
   // Toque: linha embaixo e troca de cor ficam visíveis por um instante, também no celular
-  const TAP = '.btn, .link-arrow, .footer__links a, .pindex a, .menu__links a, .contact__link, .header__nav a, .icon-btn, .chip, .filters button';
+  const TAP = '.btn, .link-arrow, .footer__links a, .menu__links a, .contact__link, .header__nav a, .icon-btn, .chip, .filters button, .views button, .plist a';
   document.addEventListener('pointerdown', (e) => {
     const el = e.target.closest(TAP); if (!el) return;
     el.classList.add('is-tap');
