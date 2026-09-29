@@ -218,6 +218,9 @@
   if (hero) {
     const slides = [...hero.querySelectorAll('[data-slide]')];
     const name = hero.querySelector('[data-hero-name]');
+    // Tela vertical: fica só a foto vertical da abertura, sem troca (as outras são horizontais e ficariam esticadas)
+    const vertical = matchMedia('(max-aspect-ratio: 1/1)').matches;
+    if (vertical && slides[0]?.dataset.altV) { slides[0].alt = slides[0].dataset.altV; slides.splice(1); }
     const later = () => slides.forEach((im) => { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } });
     if (document.querySelector('.intro:not(.is-gone)')) addEventListener('if:intro-done', () => setTimeout(later, 1500), { once: true });
     else if (document.readyState === 'complete') setTimeout(later, 2500); else addEventListener('load', () => setTimeout(later, 2500), { once: true });

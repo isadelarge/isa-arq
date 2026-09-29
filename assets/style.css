@@ -224,7 +224,7 @@ html.is-intro, html.is-locked { overflow: hidden; }
 .hero { position: relative; height: 100vh; height: 100svh; min-height: 600px; color: var(--white); overflow: hidden; background: var(--earth); }
 .hero__media { position: absolute; inset: 0; }
 .hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 2s var(--ease-io); }
-.hero__media img.is-active { opacity: 1; animation: heroZoom 10s linear both; }
+.hero__media img.is-active { opacity: 1; }   /* sem zoom: as fotos têm só 1170 px e o zoom as esticava ainda mais */
 @keyframes heroZoom { from { transform: scale(1.1); } to { transform: scale(1); } }
 .hero::after, .p-hero::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
