@@ -1,0 +1,17 @@
+# Fotos originais em alta (o site usa as versões otimizadas em assets/img)
+fotos/
+assets/img/manifest.json
+
+# Configuração local do editor e do Claude
+.claude/
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependências e builds, caso venham a existir
+node_modules/
+dist/
