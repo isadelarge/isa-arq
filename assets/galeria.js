@@ -33,6 +33,7 @@
   }).join('');
   pindex.innerHTML = P.map((p) => `<a href="#g-${p.slug}" data-cat="${p.cat}">${esc(p.name)}</a>`).join('');
   observe(list); observe(pindex.parentElement); scanImgs(list); IF.noWidows(list);
+  IF.dots(list);
 
   // Filtros: Todos, Arquitetura, Interiores
   const setFilter = (cat) => {

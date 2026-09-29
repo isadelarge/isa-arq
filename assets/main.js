@@ -79,21 +79,28 @@
   // Header: transparente sobre a foto de abertura, sólido depois, some ao descer e volta ao subir
   const header = document.querySelector('[data-header]');
   const hero = document.querySelector('[data-hero]');
-  // Abertura só com o nome: a navbar fica escondida no topo e aparece ao rolar
+  // Abertura só com o nome: a navbar fica escondida no topo até surgir depois da intro
   const bare = hero?.hasAttribute('data-bare');
-  let lastY = scrollY;
+  let lastY = scrollY, acc = 0, autoScroll = false;
+  // Some ao rolar para baixo, volta com um leve movimento para cima.
+  // Soma o deslocamento em cada direção, porque a rolagem suave chega em passos pequenos.
   const onScroll = () => {
-    const y = scrollY, limit = hero ? hero.offsetHeight - 80 : 10;
-    header.classList.toggle('is-solid', !hero || y > limit);
-    if (bare) header.classList.toggle('is-hidden', y < 60 && !header.classList.contains('is-revealed'));
-    else header.classList.toggle('is-hidden', y > lastY && y > limit + 200);
+    const y = scrollY, dy = y - lastY, limit = hero ? hero.offsetHeight - 80 : 10;
     lastY = y;
+    header.classList.toggle('is-solid', !hero || y > limit);
+    if (dy && Math.sign(dy) !== Math.sign(acc)) acc = 0;
+    acc = autoScroll ? 0 : acc + dy;
+    if (bare && y < 60 && !header.classList.contains('is-revealed')) header.classList.add('is-hidden');
+    else if (autoScroll || y <= 90) header.classList.remove('is-hidden');
+    else if (acc > 12) header.classList.add('is-hidden');
+    else if (acc < -6) header.classList.remove('is-hidden');
   };
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Celular: depois da intro, a navbar surge em fade sobre a foto e a página desce até a primeira seção
-  if (bare && matchMedia('(max-width: 900px)').matches) {
+  // Depois da intro, a navbar surge em fade sobre a foto; no celular a página também desce até a primeira seção
+  if (bare) {
+    const mobile = matchMedia('(max-width: 900px)').matches;
     addEventListener('if:intro-done', () => {
       const first = hero.nextElementSibling;
       let touched = false;
@@ -104,9 +111,12 @@
         header.classList.remove('is-hidden');
         setTimeout(() => header.classList.remove('is-fadein'), 900);
         setTimeout(() => {
-          if (touched || scrollY > 20 || !first || reduce) return;
-          if (lenis) lenis.scrollTo(first, { duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 4) });
-          else first.scrollIntoView({ behavior: 'smooth' });
+          if (!mobile || touched || scrollY > 20 || !first || reduce) return;
+          autoScroll = true;
+          const done = () => { autoScroll = false; lastY = scrollY; acc = 0; };
+          setTimeout(done, 2000); // garante a volta ao normal se a rolagem for interrompida
+          if (lenis) lenis.scrollTo(first, { duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 4), onComplete: done });
+          else { first.scrollIntoView({ behavior: 'smooth' }); setTimeout(done, 1200); }
         }, 1000);
       }, 1000);
     }, { once: true });
@@ -216,7 +226,7 @@
   // Revelação ao entrar na tela
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-  }), { rootMargin: '0px 0px -10% 0px' });
+  }), { rootMargin: matchMedia('(max-width: 900px)').matches ? '0px 0px 12% 0px' : '0px 0px -10% 0px' });
   const observe = (scope = document) => scope.querySelectorAll('.reveal, .reveal-lines, .img-reveal').forEach((el) => {
     if (!el.classList.contains('is-in')) io.observe(el);
   });
@@ -461,5 +471,37 @@
   });
   noWidows();
 
-  window.IF = { P, bySlug, src, catName, esc, lenis, lock, scrollToEl, observe, scanImgs, openLb, sequence, stripHTML, roomsHTML, bindTour, mosaicPick, count, escStack, noWidows, wa };
+  // Toque: linha embaixo e troca de cor ficam visíveis por um instante, também no celular
+  const TAP = '.btn, .link-arrow, .footer__links a, .pindex a, .menu__links a, .contact__link, .header__nav a, .icon-btn, .chip, .filters button';
+  document.addEventListener('pointerdown', (e) => {
+    const el = e.target.closest(TAP); if (!el) return;
+    el.classList.add('is-tap');
+    setTimeout(() => el.classList.remove('is-tap'), 650);
+  }, { passive: true });
+
+  // Pontinhos embaixo do carrossel de fotos no celular
+  const dots = (scope = document) => scope.querySelectorAll('.mosaic').forEach((m) => {
+    if (m.nextElementSibling?.classList.contains('mosaic__dots')) return;
+    const items = [...m.querySelectorAll('.mosaic__item')];
+    if (items.length < 2) return;
+    m.insertAdjacentHTML('afterend', `<div class="mosaic__dots" aria-hidden="true">${items.map(() => '<span></span>').join('')}</div>`);
+    const marks = [...m.nextElementSibling.children];
+    const sync = () => {
+      const step = items[1].offsetLeft - items[0].offsetLeft || 1;
+      const k = Math.min(items.length - 1, Math.round(m.scrollLeft / step));
+      marks.forEach((d, i) => d.classList.toggle('is-on', i === k));
+    };
+    m.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+    sync();
+  });
+  dots();
+
+  // "Ver mais" da seção da arquiteta no celular
+  document.querySelectorAll('[data-more-about]').forEach((b) => b.addEventListener('click', () => {
+    const box = b.closest('.about__text');
+    box.classList.add('is-open'); b.setAttribute('aria-expanded', 'true');
+    IF.lenis?.resize();
+  }));
+
+  window.IF = { P, bySlug, src, catName, esc, lenis, lock, scrollToEl, observe, scanImgs, openLb, sequence, stripHTML, roomsHTML, bindTour, mosaicPick, count, escStack, noWidows, wa, dots };
 })();
