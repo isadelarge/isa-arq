@@ -728,7 +728,7 @@ html.pt-arrive::after { content: var(--pt-label, ""); animation: ptOut .9s .15s 
   .office__more .link-arrow::after { display: none; }   /* a linha de baixo do toque não se aplica a esta linha inteira */
   .contact__layout { grid-template-columns: 1fr; row-gap: var(--s-block); }
   .contact__main, .contact__jag { grid-column: 1; }
-  .contact__jag { width: min(62%, 360px); margin-bottom: 0; }
+  .contact__jag { width: min(62%, 360px); margin-bottom: 0; justify-self: start; -webkit-mask-position: left center; mask-position: left center; }   /* alinhada ao texto */
   .ident .eyebrow { padding-top: 0; margin-bottom: var(--s-head); }
   .ident__img--a { margin-top: var(--s-block); width: 80%; }
   .ident__img--b { margin-top: 24px; width: 72%; justify-self: end; }
