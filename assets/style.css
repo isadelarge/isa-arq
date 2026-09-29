@@ -303,6 +303,8 @@ figcaption { margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing
 .ident__img--a .frame { aspect-ratio: 3 / 4; }
 .ident__img--b { grid-column: 14 / 24; grid-row: 2 / 4; margin-top: clamp(220px, 26vw, 460px); }
 .ident__img--b .frame { aspect-ratio: 4 / 5; }
+/* Foto do ICQ inteira na moldura (mesma proporção), sem cortar o arco do armário */
+.ident__img--b .frame img { top: 0; height: 100%; object-position: center top; }
 .ident__side { grid-column: 3 / 10; grid-row: 3; margin-top: clamp(48px, 5vw, 90px); font-size: clamp(18px, 1.35vw, 21px); line-height: 1.6; color: rgba(42, 26, 18, .88); max-width: 440px; }
 
 /* ---------- Cabeçalho de seção ---------- */
