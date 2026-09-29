@@ -310,10 +310,9 @@
   <div class="lb" data-lb tabindex="-1" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Foto ampliada">
     <div class="lb__top wrap">
       <p class="lb__name" data-lb-name></p>
-      <span class="lb__count" data-lb-count></span>
       <button class="icon-btn" data-lb-close aria-label="Fechar"><svg class="i"><use href="#i-close"/></svg></button>
     </div>
-    <div class="lb__stage" data-lb-stage></div>
+    <div class="lb__stage" data-lb-stage><span class="lb__count" data-lb-count></span></div>
     <div class="lb__foot"></div>
     <button class="lb__nav lb__nav--prev icon-btn" data-lb-prev aria-label="Foto anterior"><svg class="i"><use href="#i-arrow-l"/></svg></button>
     <button class="lb__nav lb__nav--next icon-btn" data-lb-next aria-label="Próxima foto"><svg class="i"><use href="#i-arrow"/></svg></button>
@@ -324,6 +323,14 @@
   const lbCount = lb.querySelector('[data-lb-count]');
   let seq = [], at = 0, lastFocus = null, lbLocked = false;
   const pad = (n) => String(n).padStart(2, '0');
+  // A contagem fica logo abaixo da foto, onde quer que ela termine (a foto se ajusta à tela sem cortar)
+  const placeCount = (im) => {
+    if (!im?.naturalWidth) return;
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    const h = im.naturalHeight * Math.min(sw / im.naturalWidth, sh / im.naturalHeight);
+    lbCount.style.top = `${Math.min((sh + h) / 2 + 16, sh + 12)}px`;
+  };
+  addEventListener('resize', () => { if (lb.classList.contains('is-open')) placeCount(stage.querySelector('img.is-active')); });
   const show = (n) => {
     at = (n + seq.length) % seq.length;
     const x = seq[at];
@@ -331,7 +338,7 @@
     const im = new Image();
     im.alt = `${x.p.name}, ${x.room}`; im.src = src(x.p.slug, x.i);
     stage.appendChild(im);
-    const on = () => requestAnimationFrame(() => im.classList.add('is-active'));
+    const on = () => requestAnimationFrame(() => { placeCount(im); im.classList.add('is-active'); });
     if (im.complete) on(); else im.onload = on;
     lbName.innerHTML = `${esc(x.p.name)}<small>${esc(x.room)}</small>`;
     lbCount.textContent = `${pad(at + 1)} / ${pad(seq.length)}`;
