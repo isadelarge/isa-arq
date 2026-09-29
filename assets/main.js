@@ -60,7 +60,7 @@
       root.classList.remove('is-intro');
       lenis?.start();
       setTimeout(ready, 350);
-      setTimeout(() => intro.classList.add('is-gone'), 1400);
+      setTimeout(() => { intro.classList.add('is-gone'); dispatchEvent(new Event('if:intro-done')); }, 1400);
     };
     const heroImg = document.querySelector('.hero__media img');
     Promise.all([
@@ -85,12 +85,32 @@
   const onScroll = () => {
     const y = scrollY, limit = hero ? hero.offsetHeight - 80 : 10;
     header.classList.toggle('is-solid', !hero || y > limit);
-    if (bare) header.classList.toggle('is-hidden', y < 60);
+    if (bare) header.classList.toggle('is-hidden', y < 60 && !header.classList.contains('is-revealed'));
     else header.classList.toggle('is-hidden', y > lastY && y > limit + 200);
     lastY = y;
   };
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // Celular: depois da intro, a navbar surge em fade sobre a foto e a página desce até a primeira seção
+  if (bare && matchMedia('(max-width: 900px)').matches) {
+    addEventListener('if:intro-done', () => {
+      const first = hero.nextElementSibling;
+      let touched = false;
+      const stop = () => { touched = true; };
+      ['touchstart', 'wheel', 'keydown'].forEach((t) => addEventListener(t, stop, { once: true, passive: true }));
+      setTimeout(() => {
+        header.classList.add('is-revealed', 'is-fadein');
+        header.classList.remove('is-hidden');
+        setTimeout(() => header.classList.remove('is-fadein'), 900);
+        setTimeout(() => {
+          if (touched || scrollY > 20 || !first || reduce) return;
+          if (lenis) lenis.scrollTo(first, { duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 4) });
+          else first.scrollIntoView({ behavior: 'smooth' });
+        }, 1000);
+      }, 1000);
+    }, { once: true });
+  }
 
   // Menu
   const menu = document.querySelector('[data-menu]');

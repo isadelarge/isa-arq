@@ -120,6 +120,9 @@ html.is-intro, html.is-locked { overflow: hidden; }
 .header.is-solid { background: var(--white); color: var(--ink); }
 .header.is-solid .header__logo img { filter: none; }
 .header.is-hidden { transform: translateY(-100%); }
+/* Entrada da navbar no celular: aparece em fade, sem deslizar */
+.header.is-fadein { transition: none; animation: headerFade .9s var(--ease) both; }
+@keyframes headerFade { from { opacity: 0; } to { opacity: 1; } }
 
 /* Menu do celular: cortina escura que desce, como no Taipa */
 .menu {
